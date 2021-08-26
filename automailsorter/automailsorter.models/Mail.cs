@@ -8,8 +8,16 @@ namespace automailsorter.models
 {
     public class Mail
     {
-        public MailAddress fromAddress { get; set; }
-        public string title { get; set; }
+        public MailAddress fromAddress { get; }
+        public string fromName { get; }
+        public string title { get; }
+
+        public Mail(MailAddress fromAddress, string fromName, string title)
+        {
+            this.fromAddress = fromAddress;
+            this.fromName = fromName;
+            this.title = title;
+        }
     }
 
     public class MailAddress
@@ -20,7 +28,7 @@ namespace automailsorter.models
 
         public MailAddress(string mailAddress)
         {
-            string[] splittedAddress = mailAddress.Split(new[] { '@', ',' });
+            string[] splittedAddress = mailAddress.Split(new[] { '@', '.' });
             this.department = splittedAddress[0];
             this.domain = splittedAddress[1];
             this.tld = splittedAddress[2];
