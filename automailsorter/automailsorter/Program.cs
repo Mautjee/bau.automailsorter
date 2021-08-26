@@ -2,6 +2,8 @@
 using automailsorter.services.IMAP;
 using System;
 using System.Threading.Tasks;
+using automailsorter.logic.Jobs;
+using automailsorter.logic.Listeners;
 
 namespace automailsorter
 {
@@ -9,7 +11,8 @@ namespace automailsorter
     {
         public static async Task Main(string[] args)
         {
-            ImapConnector conn = new ImapConnector(config =>
+            // Setup access to mailbox of user
+            IConnector conn = new ImapConnector(config =>
             {
                 config.server = "imap.ethereal.email";
                 config.port = 993;
@@ -17,9 +20,17 @@ namespace automailsorter
                 config.password = "cN83M1Uqx1bgPUnyVa";
             });
 
-            conn.connectMailBox();
-            Console.WriteLine(conn.getUnreadInboxMessages());
-            conn.disconnectMailBox();
+            // Schedule jobs, these trigger listeners which will sort the mailbox
+            Scheduler scheduler = await Scheduler.InitialiseScheduler();
+
+            var job = scheduler.createJob<GenericJob>("job-sortunreadmail");
+            var trigger = scheduler.createTrigger("0 0/1 * * * ?", "trigger-sortunreadmail");
+            await scheduler.scheduleJob(job, trigger);
+
+            var listener = new UnreadMailToMapListener("listener-sortunreadmail", conn);
+            scheduler.setJobListener(listener, "job-sortunreadmail");
+
+            Console.ReadLine();
 		}
     }
 }

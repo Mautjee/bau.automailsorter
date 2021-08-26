@@ -11,51 +11,51 @@ using MimeKit;
 
 namespace automailsorter.services.IMAP
 {
-    public class ImapConnector
+    public class ImapConnector : IConnector
     {
-		private ImapClient _client;
-		private ConnectionConfiguration _config;
+        private ImapClient _client;
+        private ConnectionConfiguration _config;
 
-		public ImapConnector(Action<ConnectionConfiguration> configuration)
+        public ImapConnector(Action<ConnectionConfiguration> configuration)
         {
-			var config = new ConnectionConfiguration();
-			configuration?.Invoke(config);
+            var config = new ConnectionConfiguration();
+            configuration?.Invoke(config);
 
-			this._config = config;
-		}
+            this._config = config;
+        }
 
         public void connectMailBox()
         {
-			var client = new ImapClient();
-			client.Connect(_config.server, _config.port, true);
-			client.Authenticate(_config.user, _config.password);
+            var client = new ImapClient();
+            client.Connect(_config.server, _config.port, true);
+            client.Authenticate(_config.user, _config.password);
 
-			this._client = client;
-		}
+            this._client = client;
+        }
 
-		public List<Mail> getUnreadInboxMessages()
+        public List<Mail> getUnreadInboxMessages()
         {
-			List<Mail> mailList = new List<Mail>();
+            List<Mail> mailList = new List<Mail>();
 
-			var inbox = _client.Inbox;
-			inbox.Open(FolderAccess.ReadOnly);
+            var inbox = _client.Inbox;
+            inbox.Open(FolderAccess.ReadOnly);
 
-			var query = SearchQuery.NotSeen;
+            var query = SearchQuery.NotSeen;
 
-			foreach (var uid in inbox.Search(query))
+            foreach (var uid in inbox.Search(query))
             {
-				var message = inbox.GetMessage(uid);
-				MailAddress mailAddress = new MailAddress(message.From.OfType<MailboxAddress>().Single().Address.ToString());
-				Mail mail = new Mail(mailAddress, message.From[0].Name, message.Subject);
-				mailList.Add(mail);
-			}
+                var message = inbox.GetMessage(uid);
+                MailAddress mailAddress = new MailAddress(message.From.OfType<MailboxAddress>().Single().Address.ToString());
+                Mail mail = new Mail(mailAddress, message.From[0].Name, message.Subject);
+                mailList.Add(mail);
+            }
 
-			return mailList;
-		}
+            return mailList;
+        }
 
-		public void disconnectMailBox()
+        public void disconnectMailBox()
         {
-			_client.Disconnect(true);
-		}
+            _client.Disconnect(true);
+        }
     }
 }

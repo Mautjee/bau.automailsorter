@@ -1,5 +1,6 @@
 ﻿using Quartz;
 using Quartz.Impl;
+using Quartz.Impl.Matchers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace automailsorter.services.Scheduler
 {
-    public sealed class Scheduler
+    public class Scheduler
     {
         public IScheduler _scheduler;
 
         private Scheduler(IScheduler scheduler)
         {
-            this._scheduler = scheduler;
+            _scheduler = scheduler;
         }
 
         public static async Task<Scheduler> InitialiseScheduler()
@@ -26,14 +27,14 @@ namespace automailsorter.services.Scheduler
             return new Scheduler(scheduler);
         }
 
-        public IJobDetail createJob<T>(string jobName, string jobGroup) where T : IJob
+        public IJobDetail createJob<T>(string jobName, string jobGroup = "default") where T : IJob
         {
             return JobBuilder.Create<T>()
                 .WithIdentity(jobName, jobGroup)
                 .Build();
         }
 
-        public ITrigger createTrigger(string triggerName, string triggerGroup, string schedule)
+        public ITrigger createTrigger(string schedule, string triggerName, string triggerGroup = "default")
         {
             return TriggerBuilder.Create()
                 .WithIdentity(triggerName, triggerGroup)
@@ -43,8 +44,13 @@ namespace automailsorter.services.Scheduler
 
         public async Task<bool> scheduleJob(IJobDetail job, ITrigger trigger)
         {
-            await this._scheduler.ScheduleJob(job, trigger);
+            await _scheduler.ScheduleJob(job, trigger);
             return true;
+        }
+
+        public void setJobListener(IJobListener listener, string jobName, string jobGroup = "default")
+        {
+            _scheduler.ListenerManager.AddJobListener(listener, KeyMatcher<JobKey>.KeyEquals(new JobKey(jobName, jobGroup)));
         }
     }
 }

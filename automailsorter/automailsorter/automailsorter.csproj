@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\automailsorter.logic\automailsorter.logic.csproj" />
     <ProjectReference Include="..\automailsorter.services\automailsorter.services.csproj" />
   </ItemGroup>
 
