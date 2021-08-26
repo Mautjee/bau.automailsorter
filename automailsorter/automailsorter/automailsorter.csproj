@@ -9,4 +9,10 @@
     <ProjectReference Include="..\automailsorter.services\automailsorter.services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="MailKit" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.15.0" />
+  </ItemGroup>
 </Project>
