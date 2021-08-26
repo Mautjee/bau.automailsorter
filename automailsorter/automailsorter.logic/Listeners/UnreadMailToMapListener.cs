@@ -1,4 +1,5 @@
-﻿using automailsorter.services.IMAP;
+﻿using automailsorter.models;
+using automailsorter.services.IMAP;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,16 @@ namespace automailsorter.logic.Listeners
             var list = _conn.getUnreadInboxMessages();
             foreach (var mail in list)
             {
-                Console.WriteLine(mail.fromAddress.getMailAddress());
+                foreach (string key in WordGroupingDatabase.wordGroups.Keys)
+                {
+                    foreach (string word in WordGroupingDatabase.wordGroups[key])
+                    {
+                        if (mail.title.ToLower().Contains(word))
+                        {
+                            Console.WriteLine($"Category: {key}, Title: {mail.title}");
+                        }
+                    }
+                }
             }
             _conn.disconnectMailBox();
 

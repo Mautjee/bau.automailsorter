@@ -4,6 +4,10 @@ using System;
 using System.Threading.Tasks;
 using automailsorter.logic.Jobs;
 using automailsorter.logic.Listeners;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using System.IO;
+using System.Configuration;
 
 namespace automailsorter
 {
@@ -14,10 +18,13 @@ namespace automailsorter
             // Setup access to mailbox of user
             IConnector conn = new ImapConnector(config =>
             {
-                config.server = "imap.ethereal.email";
+                //config.server = "imap.ethereal.email";
                 config.port = 993;
-                config.user = "casimer.dietrich85@ethereal.email";
-                config.password = "cN83M1Uqx1bgPUnyVa";
+                //config.user = "casimer.dietrich85@ethereal.email";
+                //config.password = "cN83M1Uqx1bgPUnyVa";
+                config.server = "outlook.office365.com";
+                config.user = "s.e.gerritsen@outlook.com";
+                config.password = "gBw28#YP7lkDzIi^3GG*4W5ji@bCyPG74A4";
             });
 
             // Schedule jobs, these trigger listeners which will sort the mailbox
