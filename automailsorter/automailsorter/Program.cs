@@ -1,11 +1,14 @@
-﻿using System;
+﻿using automailsorter.services.Scheduler;
+using System;
+using System.Threading.Tasks;
 
 namespace automailsorter
 {
     class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
+            Scheduler scheduler = await Scheduler.InitialiseScheduler();
             Console.WriteLine("Hello World!");
         }
     }

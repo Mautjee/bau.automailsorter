@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "automailsorter", "automails
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "automailsorter.models", "automailsorter.models\automailsorter.models.csproj", "{1B110D2A-1B59-46A6-9F00-5AF1E8898424}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "automailsorter.services", "automailsorter.services\automailsorter.services.csproj", "{5D2EC506-73FB-4886-9F50-574F9CAC71B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B110D2A-1B59-46A6-9F00-5AF1E8898424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B110D2A-1B59-46A6-9F00-5AF1E8898424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B110D2A-1B59-46A6-9F00-5AF1E8898424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2EC506-73FB-4886-9F50-574F9CAC71B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2EC506-73FB-4886-9F50-574F9CAC71B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2EC506-73FB-4886-9F50-574F9CAC71B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2EC506-73FB-4886-9F50-574F9CAC71B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
