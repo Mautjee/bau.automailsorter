@@ -4,10 +4,11 @@ using System;
 using System.Threading.Tasks;
 using automailsorter.logic.Jobs;
 using automailsorter.logic.Listeners;
+using System.Configuration;
+using System.Collections.Specialized;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using System.IO;
-using System.Configuration;
 
 namespace automailsorter
 {
@@ -18,13 +19,10 @@ namespace automailsorter
             // Setup access to mailbox of user
             IConnector conn = new ImapConnector(config =>
             {
-                //config.server = "imap.ethereal.email";
-                config.port = 993;
-                //config.user = "casimer.dietrich85@ethereal.email";
-                //config.password = "cN83M1Uqx1bgPUnyVa";
-                config.server = "outlook.office365.com";
-                config.user = "s.e.gerritsen@outlook.com";
-                config.password = "gBw28#YP7lkDzIi^3GG*4W5ji@bCyPG74A4";
+                config.port = Int32.Parse(ConfigurationManager.AppSettings.Get("port"));
+                config.server = ConfigurationManager.AppSettings.Get("server");
+                config.user = ConfigurationManager.AppSettings.Get("user");
+                config.password = ConfigurationManager.AppSettings.Get("password");
             });
 
             // Schedule jobs, these trigger listeners which will sort the mailbox
@@ -33,6 +31,8 @@ namespace automailsorter
             var job = scheduler.createJob<GenericJob>("job-sortunreadmail");
             var trigger = scheduler.createTrigger("0 0/1 * * * ?", "trigger-sortunreadmail");
             await scheduler.scheduleJob(job, trigger);
+
+            Console.WriteLine(conn.ToString());
 
             var listener = new UnreadMailToMapListener("listener-sortunreadmail", conn);
             scheduler.setJobListener(listener, "job-sortunreadmail");

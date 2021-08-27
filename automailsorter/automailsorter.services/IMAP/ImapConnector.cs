@@ -39,7 +39,7 @@ namespace automailsorter.services.IMAP
 
             var inbox = _client.Inbox;
             inbox.Open(FolderAccess.ReadOnly);
-
+            Console.WriteLine(inbox.Count());
             var query = SearchQuery.NotSeen.And(SearchQuery.DeliveredAfter(DateTime.Parse("2021-08-01")));
 
             foreach (var uid in inbox.Search(query))
