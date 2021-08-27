@@ -38,7 +38,11 @@ namespace automailsorter.services.Scheduler
         {
             return TriggerBuilder.Create()
                 .WithIdentity(triggerName, triggerGroup)
+#if DEBUG
+                .StartNow()
+#else
                 .WithCronSchedule(schedule)
+#endif
                 .Build();
         }
 

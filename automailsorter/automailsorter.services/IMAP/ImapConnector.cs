@@ -36,11 +36,11 @@ namespace automailsorter.services.IMAP
         public List<Mail> getUnreadInboxMessages()
         {
             List<Mail> mailList = new List<Mail>();
-
             var inbox = _client.Inbox;
             inbox.Open(FolderAccess.ReadOnly);
-            Console.WriteLine(inbox.Count());
-            var query = SearchQuery.NotSeen.And(SearchQuery.DeliveredAfter(DateTime.Parse("2021-08-01")));
+            var query = SearchQuery.NotSeen;//.And(SearchQuery.DeliveredAfter(DateTime.Parse("2021-08-01")));
+
+            Console.WriteLine(inbox.Count);
 
             foreach (var uid in inbox.Search(query))
             {
