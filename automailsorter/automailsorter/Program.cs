@@ -25,17 +25,14 @@ namespace automailsorter
                 config.password = ConfigurationManager.AppSettings.Get("password");
             });
 
-            // Schedule jobs, these trigger listeners which will sort the mailbox
             Scheduler scheduler = await Scheduler.InitialiseScheduler();
-
-            var job = scheduler.createJob<GenericJob>("job-sortunreadmail");
-            var trigger = scheduler.createTrigger("0 0/1 * * * ?", "trigger-sortunreadmail");
-            await scheduler.scheduleJob(job, trigger);
-
-            Console.WriteLine(conn.ToString());
 
             var listener = new UnreadMailToMapListener("listener-sortunreadmail", conn);
             scheduler.setJobListener(listener, "job-sortunreadmail");
+
+            var job = scheduler.createJob<GenericJob>("job-sortunreadmail");
+            var trigger = scheduler.createTrigger("0 1-59/10 * * * ?", "trigger-sortunreadmail");
+            await scheduler.scheduleJob(job, trigger);
 
             Console.ReadLine();
 		}
